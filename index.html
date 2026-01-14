@@ -8,31 +8,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        :root {
+            --sat: env(safe-area-inset-top);
+            --sar: env(safe-area-inset-right);
+            --sab: env(safe-area-inset-bottom);
+            --sal: env(safe-area-inset-left);
+        }
         body {
             font-family: 'Inter', sans-serif;
             -webkit-tap-highlight-color: transparent;
             overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            background-color: #f9fafb;
+        }
+        #root {
             height: 100%;
             width: 100%;
-            position: fixed;
         }
-        .perspective-1000 {
-            perspective: 1000px;
-        }
-        .backface-hidden {
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-        }
-        .transform-style-preserve-3d {
-            transform-style: preserve-3d;
-        }
-        .rotate-y-180 {
-            transform: rotateY(180deg);
-        }
-        /* Safe area handling for newer iPhones */
-        .pb-safe {
-            padding-bottom: env(safe-area-inset-bottom);
-        }
+        .perspective-1000 { perspective: 1000px; }
+        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .transform-style-preserve-3d { transform-style: preserve-3d; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        
+        /* Custom scrollbar for better look */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
     </style>
 <script type="importmap">
 {
@@ -46,9 +49,8 @@
 }
 </script>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body>
     <div id="root"></div>
-    <!-- Crucial fix for blank screen: Load the entry point -->
     <script type="module" src="./index.tsx"></script>
 </body>
 </html>
