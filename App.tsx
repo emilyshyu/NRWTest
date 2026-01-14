@@ -41,20 +41,20 @@ const Flashcard: React.FC<{
     <div className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d ${showBack ? 'rotate-y-180' : ''}`}>
       {/* Front */}
       <div className={`absolute inset-0 w-full h-full bg-white rounded-3xl shadow-xl p-5 flex flex-col backface-hidden border border-gray-100 ${showBack ? 'hidden' : 'flex'}`}>
-        <div className="shrink-0 text-center mb-2">
+        <div className="shrink-0 text-center mb-1">
           <span className="inline-block px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black rounded-full uppercase tracking-tighter">Frage {question.id}</span>
         </div>
         
-        {/* Scrollable Question Area */}
-        <div className="flex-1 overflow-y-auto py-4 flex flex-col">
-           <div className="my-auto">
+        {/* Scrollable Question Area - ensures visibility of long text */}
+        <div className="flex-1 min-h-0 overflow-y-auto py-2 flex flex-col">
+           <div className="my-auto py-4">
               <h2 className="text-base md:text-lg font-bold leading-tight text-gray-900 text-center px-2">
                 {question.questionDe || "Lade Frage..."}
               </h2>
            </div>
         </div>
 
-        {/* Options Area - Fixed height per item to save space */}
+        {/* Options Area - more compact */}
         <div className="space-y-2 shrink-0 mt-2">
           {question.optionsDe.map((opt, i) => (
             <button key={i} onClick={() => onAnswer(i)} className="w-full text-left p-3 rounded-2xl border border-gray-100 bg-gray-50/50 active:bg-blue-50 active:border-blue-200 transition-all flex items-center group">
@@ -67,7 +67,7 @@ const Flashcard: React.FC<{
 
       {/* Back */}
       <div className={`absolute inset-0 w-full h-full bg-white rounded-3xl shadow-xl p-5 flex flex-col border-2 border-gray-50 ${showBack ? 'flex' : 'hidden'} rotate-y-180`}>
-        <div className="flex-1 overflow-y-auto space-y-6 pr-1">
+        <div className="flex-1 min-h-0 overflow-y-auto space-y-6 pr-1">
           <section>
             <p className="text-[9px] font-black text-gray-400 mb-2 uppercase tracking-[0.2em]">Original (DE)</p>
             <h3 className="text-[14px] font-bold mb-3 leading-snug">{question.questionDe}</h3>
@@ -139,27 +139,29 @@ const App: React.FC = () => {
     const unitsCount = Math.ceil(allQuestions.length / 30);
     return (
       <div className="h-full bg-gray-50 flex flex-col overflow-hidden pb-safe">
-        <header className="bg-white border-b border-gray-100 pt-14 pb-8 px-6 text-center shrink-0">
-          <div className="w-16 h-16 bg-blue-600 rounded-[1.5rem] flex items-center justify-center text-white mx-auto mb-4 shadow-xl">
-             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+        {/* Adjusted Header: Smaller Padding & Icon Size */}
+        <header className="bg-white border-b border-gray-100 pt-8 pb-4 px-6 text-center shrink-0">
+          <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white mx-auto mb-2 shadow-lg shadow-blue-100">
+             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
           </div>
-          <h1 className="text-2xl font-black text-gray-900">Einbürgerungstest</h1>
-          <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em] mt-2">Prüfungstrainer</p>
+          <h1 className="text-xl font-black text-gray-900 tracking-tight">Einbürgerungstest</h1>
+          <p className="text-[9px] text-gray-400 font-bold uppercase tracking-[0.25em] mt-1 opacity-70">Prüfungstrainer</p>
         </header>
-        <main className="flex-1 overflow-y-auto p-5 space-y-4 max-w-lg mx-auto w-full">
+        {/* Added pb-12 for white space at the bottom */}
+        <main className="flex-1 overflow-y-auto p-5 pb-12 space-y-4 max-w-lg mx-auto w-full">
           <button onClick={() => { resetAll(); setMode(AppMode.FLASHCARD_ALL); }} className="w-full bg-white border border-gray-200 p-5 rounded-3xl shadow-sm flex items-center justify-between active:scale-[0.98] transition-all">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-black">ALL</div>
+              <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center font-black text-xs">ALL</div>
               <div className="text-left"><p className="font-black text-gray-800 text-sm uppercase">Alle Fragen</p><p className="text-xs text-gray-400">Frage 1 bis 317</p></div>
             </div>
             <svg className="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
           </button>
           <div className="grid grid-cols-3 gap-3">
             {Array.from({ length: unitsCount }).map((_, i) => (
-              <button key={i} onClick={() => { resetAll(); setCurrentUnit(i+1); setMode(AppMode.FLASHCARD_UNIT); }} className="bg-white border border-gray-100 py-4 rounded-2xl shadow-sm text-center font-black text-gray-600 text-[10px] uppercase active:bg-blue-600 active:text-white transition-all">Unit {i+1}</button>
+              <button key={i} onClick={() => { resetAll(); setCurrentUnit(i+1); setMode(AppMode.FLASHCARD_UNIT); }} className="bg-white border border-gray-100 py-4 rounded-2xl shadow-sm text-center font-black text-gray-600 text-[9px] uppercase active:bg-blue-600 active:text-white transition-all">Unit {i+1}</button>
             ))}
           </div>
-          <button onClick={startTest} className="w-full bg-gradient-to-br from-blue-600 to-blue-700 text-white p-6 rounded-3xl shadow-xl flex items-center justify-between active:scale-[0.98] transition-all mt-4">
+          <button onClick={startTest} className="w-full bg-gradient-to-br from-blue-600 to-blue-700 text-white p-6 rounded-3xl shadow-xl flex items-center justify-between active:scale-[0.98] transition-all mt-4 shadow-blue-200">
             <span className="font-black text-sm uppercase tracking-widest">Prüfung starten</span>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7-7 7" /></svg>
           </button>
@@ -185,7 +187,7 @@ const App: React.FC = () => {
               <button onClick={() => { const i = activeQs.findIndex(x => x.id === parseInt(jumpId)); if(i !== -1) { setCurrentIndex(i); setShowBack(false); setSelectedIdx(null); setJumpId(""); } }} className="bg-gray-900 text-white px-3 py-1 text-[10px] font-black rounded-xl active:bg-blue-600 transition-colors">GO</button>
             </div>
           </div>
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 min-h-0">
             <Flashcard question={q} onAnswer={i => { setSelectedIdx(i); setShowBack(true); }} selectedIdx={selectedIdx} showBack={showBack} />
           </div>
         </div>
@@ -238,18 +240,18 @@ const App: React.FC = () => {
           <span className="text-[10px] font-black text-gray-300">{testIdx + 1}/33</span>
         </div>
 
-        <main className="flex-1 overflow-hidden p-4 flex flex-col">
+        <main className="flex-1 min-h-0 overflow-hidden p-4 flex flex-col">
           <div className="bg-white rounded-[2.5rem] shadow-xl border border-gray-100 flex-1 flex flex-col overflow-hidden p-6">
             
-            {/* Question Area */}
-            <div className="flex-1 overflow-y-auto py-2 flex flex-col">
-              <div className="my-auto">
+            {/* Question Area - ensure flex container expands */}
+            <div className="flex-1 min-h-0 overflow-y-auto py-2 flex flex-col">
+              <div className="my-auto py-4">
                 <h2 className="text-base md:text-lg font-bold text-center leading-tight px-2">{q.questionDe}</h2>
               </div>
             </div>
 
             {/* Options Area */}
-            <div className="space-y-2 shrink-0 mt-4">
+            <div className="space-y-2 shrink-0 mt-2">
               {q.optionsDe.map((opt, i) => {
                 let s = 'border-gray-100 bg-gray-50/30 text-gray-700';
                 if (isAns) {
